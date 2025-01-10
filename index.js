@@ -6,7 +6,13 @@ const app = express();
 // Import Router
 const apiRouter = require('./api');
 
-app.use(cors());
+// Enable CORS for all routes
+app.use(cors({
+  origin: '*', // Allow all origins
+  methods: 'GET,POST,PUT,DELETE',
+  allowedHeaders: 'Content-Type,Authorization'
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
