@@ -585,7 +585,7 @@ function handleSubmit(event) {
 
 // Load Provinsi
 function loadProvinsi() {
-    fetch('http://127.0.0.1:4000/api/provinsi')
+    fetch('https://tes-production-1461.up.railway.app/api/provinsi')
       .then(res => res.json())
       .then(data => {
         let options = '<option value="" selected disabled>-- Pilih Provinsi --</option>';
@@ -600,7 +600,7 @@ function loadProvinsi() {
   
   // Load Kota berdasarkan Provinsi
   function loadKota(provId, el) {
-    fetch(`http://127.0.0.1:4000/api/kota/${provId}`)
+    fetch(`https://tes-production-1461.up.railway.app/api/kota/${provId}`)
       .then(res => res.json())
       .then(data => {
         let options = '<option value="" selected disabled>-- Pilih Kota --</option>';
@@ -620,7 +620,7 @@ function loadProvinsi() {
     const kurir = document.getElementById('kurir').value;
   
     if (asal && tujuan && berat && kurir) {
-      fetch(`http://127.0.0.1:4000/api/ongkos/${asal}/${tujuan}/${berat}/${kurir}`)
+      fetch(`https://tes-production-1461.up.railway.app/api/ongkos/${asal}/${tujuan}/${berat}/${kurir}`)
         .then(res => res.json())
         .then(data => {
           let output = '<h3>Hasil Ongkos Kirim</h3><table border="1">';
