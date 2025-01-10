@@ -621,7 +621,7 @@ function cekOngkir() {
   const berat = document.getElementById("berat").value;
   const kurir = document.getElementById("kurir").value;
 
-  if (asal && tujuan dan berat dan kurir) {
+  if (asal && tujuan && berat && kurir) {
     fetch(
       `https://tes-production-1461.up.railway.app/api/ongkos/${asal}/${tujuan}/${berat}/${kurir}`
     )
