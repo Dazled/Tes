@@ -1,4 +1,4 @@
-name: Deploy Node.js App
+name: Deploy to Railway
 
 on:
   push:
@@ -6,20 +6,26 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: 18
+          node-version: '14'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Start the server
-        run: node index.js
+      - name: Build the project
+        run: npm run build
+
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          npx railway up
