@@ -1,29 +1,12 @@
-const express = require('express');
-const path = require('path');
-const cors = require('cors');
+const express = require("express");
+const path = require("path");
+const cors = require("cors");
 const app = express();
-
-// Import Router
-const apiRouter = require('./api');
-app.use('/api', apiRouter);
-// Enable CORS for all routes
-app.use(cors({
-  origin: '*', // Allow all origins
-  methods: 'GET,POST,PUT,DELETE',
-  allowedHeaders: 'Content-Type,Authorization'
-}));
-
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-});
-
-
+const apiRouter = require('./routes/api');
+app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Definisikan Router pada path "/api"
-
-
+app.use(express.urlencoded({extended:false}));
+app.use(express.static(path.join(__dirname,'public')));
+app.use('/api',apiRouter);
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+app.listen(PORT,() => console.log(`server listening on port ${PORT}`));
