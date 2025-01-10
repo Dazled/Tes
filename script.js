@@ -586,8 +586,12 @@ function handleSubmit(event) {
 // Load Provinsi
 function loadProvinsi() {
   fetch("https://tes-production-1461.up.railway.app/api/provinsi")
-    .then((res) => res.json())
+    .then((res) => {
+      console.log("Response from /api/provinsi:", res); // Log the response
+      return res.json();
+    })
     .then((data) => {
+      console.log("Data from /api/provinsi:", data); // Log the data
       let options =
         '<option value="" selected disabled>-- Pilih Provinsi --</option>';
       data.rajaongkir.results.forEach((prov) => {
@@ -596,14 +600,21 @@ function loadProvinsi() {
       document.getElementById("prov1").innerHTML = options;
       document.getElementById("prov2").innerHTML = options;
     })
-    .catch((err) => alert("Error: " + err.message));
+    .catch((err) => {
+      console.error("Error from /api/provinsi:", err); // Log the error
+      alert("Error: " + err.message);
+    });
 }
 
 // Load Kota berdasarkan Provinsi
 function loadKota(provId, el) {
   fetch(`https://tes-production-1461.up.railway.app/api/kota/${provId}`)
-    .then((res) => res.json())
+    .then((res) => {
+      console.log(`Response from /api/kota/${provId}:`, res); // Log the response
+      return res.json();
+    })
     .then((data) => {
+      console.log(`Data from /api/kota/${provId}:`, data); // Log the data
       let options =
         '<option value="" selected disabled>-- Pilih Kota --</option>';
       data.rajaongkir.results.forEach((city) => {
@@ -611,7 +622,10 @@ function loadKota(provId, el) {
       });
       document.getElementById(el).innerHTML = options;
     })
-    .catch((err) => alert("Error: " + err.message));
+    .catch((err) => {
+      console.error(`Error from /api/kota/${provId}:`, err); // Log the error
+      alert("Error: " + err.message);
+    });
 }
 
 // Cek Ongkos Kirim
@@ -625,8 +639,12 @@ function cekOngkir() {
     fetch(
       `https://tes-production-1461.up.railway.app/api/ongkos/${asal}/${tujuan}/${berat}/${kurir}`
     )
-      .then((res) => res.json())
+      .then((res) => {
+        console.log(`Response from /api/ongkos/${asal}/${tujuan}/${berat}/${kurir}:`, res); // Log the response
+        return res.json();
+      })
       .then((data) => {
+        console.log(`Data from /api/ongkos/${asal}/${tujuan}/${berat}/${kurir}:`, data); // Log the data
         let output = '<h3>Hasil Ongkos Kirim</h3><table border="1">';
         const costs = data.rajaongkir.results[0].costs;
 
@@ -656,7 +674,10 @@ function cekOngkir() {
         output += "</table>";
         document.getElementById("hasil").innerHTML = output;
       })
-      .catch((err) => alert("Error: " + err.message));
+      .catch((err) => {
+        console.error(`Error from /api/ongkos/${asal}/${tujuan}/${berat}/${kurir}:`, err); // Log the error
+        alert("Error: " + err.message);
+      });
   } else {
     alert("Mohon lengkapi semua data terlebih dahulu!");
   }
@@ -664,5 +685,6 @@ function cekOngkir() {
 
 // Load provinsi saat halaman dimuat
 window.onload = loadProvinsi;
+
 
   
