@@ -585,67 +585,84 @@ function handleSubmit(event) {
 
 // Load Provinsi
 function loadProvinsi() {
-    fetch('https://tes-production-1461.up.railway.app/api/provinsi')
-      .then(res => res.json())
-      .then(data => {
-        let options = '<option value="" selected disabled>-- Pilih Provinsi --</option>';
-        data.rajaongkir.results.forEach((prov) => {
-          options += `<option value="${prov.province_id}">${prov.province}</option>`;
-        });
-        document.getElementById('prov1').innerHTML = options;
-        document.getElementById('prov2').innerHTML = options;
-      })
-      .catch(err => alert('Error: ' + err.message));
-  }
-  
-  // Load Kota berdasarkan Provinsi
-  function loadKota(provId, el) {
-    fetch(`https://tes-production-1461.up.railway.app/api/kota/${provId}`)
-      .then(res => res.json())
-      .then(data => {
-        let options = '<option value="" selected disabled>-- Pilih Kota --</option>';
-        data.rajaongkir.results.forEach((city) => {
-          options += `<option value="${city.city_id}">${city.city_name}</option>`;
-        });
-        document.getElementById(el).innerHTML = options;
-      })
-      .catch(err => alert('Error: ' + err.message));
-  }
-  
-  // Cek Ongkos Kirim
-  function cekOngkir() {
-    const asal = document.getElementById('kot1').value;
-    const tujuan = document.getElementById('kot2').value;
-    const berat = document.getElementById('berat').value;
-    const kurir = document.getElementById('kurir').value;
-  
-    if (asal && tujuan && berat && kurir) {
-      fetch(`https://tes-production-1461.up.railway.app/api/ongkos/${asal}/${tujuan}/${berat}/${kurir}`)
-        .then(res => res.json())
-        .then(data => {
-          let output = '<h3>Hasil Ongkos Kirim</h3><table border="1">';
-          const costs = data.rajaongkir.results[0].costs;
-  
-          costs.forEach((cost) => {
-            output += `
+  fetch("https://tes-production-1461.up.railway.app/api/provinsi")
+    .then((res) => res.json())
+    .then((data) => {
+      let options =
+        '<option value="" selected disabled>-- Pilih Provinsi --</option>';
+      data.rajaongkir.results.forEach((prov) => {
+        options += `<option value="${prov.province_id}">${prov.province}</option>`;
+      });
+      document.getElementById("prov1").innerHTML = options;
+      document.getElementById("prov2").innerHTML = options;
+    })
+    .catch((err) => alert("Error: " + err.message));
+}
+
+// Load Kota berdasarkan Provinsi
+function loadKota(provId, el) {
+  fetch(`https://tes-production-1461.up.railway.app/api/kota/${provId}`)
+    .then((res) => res.json())
+    .then((data) => {
+      let options =
+        '<option value="" selected disabled>-- Pilih Kota --</option>';
+      data.rajaongkir.results.forEach((city) => {
+        options += `<option value="${city.city_id}">${city.city_name}</option>`;
+      });
+      document.getElementById(el).innerHTML = options;
+    })
+    .catch((err) => alert("Error: " + err.message));
+}
+
+// Cek Ongkos Kirim
+function cekOngkir() {
+  const asal = document.getElementById("kot1").value;
+  const tujuan = document.getElementById("kot2").value;
+  const berat = document.getElementById("berat").value;
+  const kurir = document.getElementById("kurir").value;
+
+  if (asal && tujuan dan berat dan kurir) {
+    fetch(
+      `https://tes-production-1461.up.railway.app/api/ongkos/${asal}/${tujuan}/${berat}/${kurir}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        let output = '<h3>Hasil Ongkos Kirim</h3><table border="1">';
+        const costs = data.rajaongkir.results[0].costs;
+
+        costs.forEach((cost) => {
+          let etdCleaned = cost.cost[0].etd
+            ? cost.cost[0].etd.replace(/HARI/gi, "").trim()
+            : "";
+
+          // Tambahkan kembali teks "Hari" jika informasi etd tersedia
+          let etdText = etdCleaned ? `${etdCleaned} Hari` : "-";
+          output += `
               <tr>
-                <td><b>${cost.service}</b></td>
-                <td>${cost.description}</td>
-                <td>${cost.cost[0].value.toLocaleString()}</td>
-                <td>${cost.cost[0].etd} hari</td>
+                <td colspan="4"><b>${
+                  cost.service
+                }</b></td> <!-- Service berada di atas -->
+              </tr>
+              <tr>
+                <td colspan="4">
+                    <span>${cost.description}</span><br>
+                    <span>Harga: ${cost.cost[0].value.toLocaleString()}</span><br>
+                    <span>Estimasi: ${etdText}</span>
+                </td>
               </tr>
             `;
-          });
-  
-          output += '</table>';
-          document.getElementById('hasil').innerHTML = output;
-        })
-        .catch(err => alert('Error: ' + err.message));
-    } else {
-      alert('Mohon lengkapi semua data terlebih dahulu!');
-    }
+        });
+
+        output += "</table>";
+        document.getElementById("hasil").innerHTML = output;
+      })
+      .catch((err) => alert("Error: " + err.message));
+  } else {
+    alert("Mohon lengkapi semua data terlebih dahulu!");
   }
-  
-  // Load provinsi saat halaman dimuat
-  window.onload = loadProvinsi;
+}
+
+// Load provinsi saat halaman dimuat
+window.onload = loadProvinsi;
+
   
